@@ -16,7 +16,7 @@ LIST:
 python3 client.py worker list
 
 COUNTWORDS:
-python3 client.py job run-countwords http://localhost:8000/fichero1.txt
+python3 client.py job run-countwords http://localhost:8000/fichero1.txt http://localhost:8000/fichero2.txt
 
 WORDCOUNT:
-python3 client.py job run-wordcount http://localhost:8000/fichero1.txt
+python3 client.py job run-wordcount http://localhost:8000/fichero1.txt http://localhost:8000/fichero3.txt
