@@ -1,0 +1,73 @@
+/********************************************************************
+*   Project: Cluster Master-Workers                                 *
+*   Subject: SD - Distributed Sistems                               *
+*   Authors: Younes Kabiri <younes.kabiri@estudiants.urv.cat.>      *
+*            Safia Guellil <safia.guellil@urv.cat>                  *
+*   Version: 1.0                                                    *
+*   Date: 23-04-2021                                                *
+*   Title-File: Proto File [Protocol Buffer]                        *
+*   Description: defines the elements for made the comunication.    *
+*                                                                   *
+*********************************************************************/
+
+
+syntax = "proto3";
+
+
+// This message it will be sent to the server
+// for notifying how many workers has to 
+// create or delete.
+message Workers{
+ int32 workers = 1;
+}
+
+
+// This will be a standard respose message 
+// from server.
+message Response{
+ string message = 1;
+}
+
+// This is the file/s that client will send to server.
+// CountWords + WordCount 
+message File{
+    string files = 1;
+}
+
+// This is the response from server 
+// related with number of words in a/some file/s.
+message Words{
+    int32 totalWords = 1;
+}
+
+// This is the response message from server
+// is a map of each word and its occurecies.
+message WordCount{
+    string word = 1;
+    int32 num = 2;
+}
+
+// All the RCP comunications between client-server:
+service Worker{
+
+    // Unary RCP: client send to server the number of workers to create.
+    // recieve a estandar message from server.
+    rpc CreateWorkers(Workers) returns (Response) {}
+
+    // Unary RCP: client send to server the number of workers to delete.
+    // recieve a estandar message from server.
+    rpc DeleteWorkers(Workers) returns (Response) {}
+
+    // Server streaming RCP: client asks server about the workers.
+    // recieve a stream of estandar messages from server.
+    rpc List(Workers) returns (stream Response) {}
+
+    // Client streaming RPC: client send a/some file/s to server.
+    // recieve the number of words from all files.
+    rpc CoutingWords(stream File) returns (Words) {}
+
+    // Bidirectional streaming RPC: client send a/some file/s to server.
+    // recieve the number of occurencies of each word in all files.
+    rpc WordCounts(stream File) returns (stream WordCount) {} 
+
+}
